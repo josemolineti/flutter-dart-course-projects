@@ -17,7 +17,14 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Imagens'),
+          title: Text('Imagens', style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.blue,
+        ),
+        body: Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Collage_of_Nine_Dogs.jpg/1024px-Collage_of_Nine_Dogs.jpg',
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
         ),
       ),
     );
