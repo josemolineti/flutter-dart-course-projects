@@ -24,11 +24,10 @@ class _MyAppState extends State<MyApp> {
   String result = '';
 
   String makeResult(String firstNumber, String secondNumber, String operator) {
-    double firstNumDouble = double.parse(firstNumber);
-    double secondNumDouble = double.parse(secondNumber);
-    double resultNum = 0;
-
     if (secondNumber != '' && firstNumber != '') {
+      double firstNumDouble = double.parse(firstNumber);
+      double secondNumDouble = double.parse(secondNumber);
+      double resultNum = 0;
       if (operator == '+') {
         resultNum = firstNumDouble + secondNumDouble;
       } else if (operator == '-') {
@@ -46,39 +45,52 @@ class _MyAppState extends State<MyApp> {
   }
 
   void calcular(String pad) {
-    if (pad == '1' ||
-        pad == '2' ||
-        pad == '3' ||
-        pad == '4' ||
-        pad == '5' ||
-        pad == '6' ||
-        pad == '7' ||
-        pad == '8' ||
-        pad == '9') {
-      setState(() {
-        ;
-        number += pad;
-      });
-    } else if (pad == 'AC') {
-      setState(() {
-        number = '';
-      });
-    } else if (pad == '+' || pad == '-' || pad == '/' || pad == 'X') {
-      firstNumber = number;
-      operator = pad;
-      setState(() {
-        number = '';
-      });
-    } else if (pad == '=') {
-      secondNumber = number;
-      result = makeResult(firstNumber, secondNumber, operator);
-      setState(() {
-        number = result;
-      });
-    } else if (pad == 'bkspc') {
-      setState(() {
-        number = number.substring(0, number.length - 1);
-      });
+    if (number == 'Infinity') {
+      number = '';
+    } else {
+      if ((pad == '0' ||
+              pad == '1' ||
+              pad == '2' ||
+              pad == '3' ||
+              pad == '4' ||
+              pad == '5' ||
+              pad == '6' ||
+              pad == '7' ||
+              pad == '8' ||
+              pad == '9' ||
+              pad == ',') &&
+          number.length < 10) {
+        setState(() {
+          number += pad;
+          number.replaceAll(',', '.');
+          if (!number.contains('.')) {
+            print('alooo');
+            //int numInt = int.parse(number);
+            //number = numInt.toString();
+          }
+          number.replaceAll('.', ',');
+        });
+      } else if (pad == 'AC') {
+        setState(() {
+          number = '';
+        });
+      } else if (pad == '+' || pad == '-' || pad == '/' || pad == 'X') {
+        firstNumber = number;
+        operator = pad;
+        setState(() {
+          number = '';
+        });
+      } else if (pad == '=') {
+        secondNumber = number;
+        result = makeResult(firstNumber, secondNumber, operator);
+        setState(() {
+          number = result;
+        });
+      } else if (pad == 'bkspc') {
+        setState(() {
+          number = number.substring(0, number.length - 1);
+        });
+      }
     }
   }
 
