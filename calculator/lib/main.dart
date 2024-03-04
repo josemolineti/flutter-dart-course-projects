@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String number = '';
+  String number = '0';
   String firstNumber = '';
   String secondNumber = '';
   String operator = '';
@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
       double firstNumDouble = double.parse(firstNumber);
       double secondNumDouble = double.parse(secondNumber);
       double resultNum = 0;
+      String formatedResult = '';
       if (operator == '+') {
         resultNum = firstNumDouble + secondNumDouble;
       } else if (operator == '-') {
@@ -39,13 +40,20 @@ class _MyAppState extends State<MyApp> {
       } else if (operator == 'X') {
         resultNum = firstNumDouble * secondNumDouble;
       }
-      return resultNum.toString();
+      formatedResult = resultNum.toString();
+      if (formatedResult != "Infinity") {
+        List<String> resultSplit = formatedResult.split('.');
+        if (int.parse(resultSplit[1]) == 0) {
+          formatedResult = resultSplit[0];
+        }
+      }
+      return formatedResult;
     }
     return '';
   }
 
   void calcular(String pad) {
-    if (number == 'Infinity') {
+    if (number == 'Infinity' || number == '0') {
       number = '';
     } else {
       if ((pad == '0' ||
@@ -63,16 +71,12 @@ class _MyAppState extends State<MyApp> {
         setState(() {
           number += pad;
           number.replaceAll(',', '.');
-          if (!number.contains('.')) {
-            print('alooo');
-            //int numInt = int.parse(number);
-            //number = numInt.toString();
-          }
+          if (!number.contains('.')) {}
           number.replaceAll('.', ',');
         });
       } else if (pad == 'AC') {
         setState(() {
-          number = '';
+          number = '0';
         });
       } else if (pad == '+' || pad == '-' || pad == '/' || pad == 'X') {
         firstNumber = number;
@@ -87,9 +91,11 @@ class _MyAppState extends State<MyApp> {
           number = result;
         });
       } else if (pad == 'bkspc') {
-        setState(() {
-          number = number.substring(0, number.length - 1);
-        });
+        if (number.length > 0) {
+          setState(() {
+            number = number.substring(0, number.length - 1);
+          });
+        }
       }
     }
   }
@@ -130,9 +136,9 @@ class _MyAppState extends State<MyApp> {
                   onTap: () {
                     calcular('bkspc');
                   },
-                  child: Text(
-                    '<X]',
-                    style: TextStyle(fontSize: 48),
+                  child: Image.asset(
+                    'assets/images/backspace.png',
+                    width: 72,
                   ),
                 )
               ],
@@ -168,14 +174,10 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    calcular('/');
-                  },
-                  child: Text(
-                    '/',
-                    style: TextStyle(fontSize: 48),
-                  ),
-                ),
+                    onTap: () {
+                      calcular('/');
+                    },
+                    child: Image.asset('assets/images/divide.png', width: 60)),
               ],
             ),
             Row(
@@ -209,14 +211,11 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    calcular('X');
-                  },
-                  child: Text(
-                    'X',
-                    style: TextStyle(fontSize: 48),
-                  ),
-                ),
+                    onTap: () {
+                      calcular('X');
+                    },
+                    child:
+                        Image.asset('assets/images/multiply.png', width: 60)),
               ],
             ),
             Row(
@@ -250,14 +249,13 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    calcular('-');
-                  },
-                  child: Text(
-                    '-',
-                    style: TextStyle(fontSize: 48),
-                  ),
-                ),
+                    onTap: () {
+                      calcular('-');
+                    },
+                    child: Image.asset(
+                      'assets/images/minus.png',
+                      width: 60,
+                    )),
               ],
             ),
             Row(
